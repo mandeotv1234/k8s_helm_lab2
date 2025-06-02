@@ -1,0 +1,20 @@
+{{- range $key, $config := .Values.services }}
+---
+# {{ $key | upper }} SERVICE
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $config.name }}
+  namespace: {{ $.Values.namespace }}
+spec:
+  {{- if eq $config.name "api-gateway" }}
+  type: NodePort
+  {{- else }}
+  type: ClusterIP
+  {{- end }}
+  selector:
+    app: {{ $config.name }}
+  ports:
+  - port: {{ $config.port }}
+    targetPort: {{ $config.port }}
+{{- end }}

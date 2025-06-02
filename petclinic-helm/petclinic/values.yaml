@@ -1,0 +1,49 @@
+services:
+  configServer:
+    name: config-server
+    image: donalmun/config-server
+    tag: latest
+    port: 8888
+    memory: 512Mi
+
+  discoveryServer:
+    name: discovery-server
+    image: donalmun/discovery-server
+    tag: latest
+    port: 8761
+    memory: 512Mi
+
+  customersService:
+    name: customers-service
+    image: donalmun/customers-service
+    tag: latest
+    port: 8081
+    memory: 512Mi
+
+  visitsService:
+    name: visits-service
+    image: donalmun/visits-service
+    tag: latest
+    port: 8082
+    memory: 512Mi
+
+  vetsService:
+    name: vets-service
+    image: donalmun/vets-service
+    tag: latest
+    port: 8083
+    memory: 512Mi
+
+  apiGateway:
+    name: api-gateway
+    image: donalmun/api-gateway
+    tag: latest
+    port: 8080
+    memory: 512Mi
+
+  adminServer:
+    name: admin-server
+    image: donalmun/admin-server
+    tag: latest
+    port: 9090
+    memory: 512Mi

@@ -1,0 +1,59 @@
+{{- range $key, $config := .Values.services }}
+---
+# {{ $key | upper }} DEPLOYMENT
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $config.name }}
+  namespace: {{ $.Values.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ $config.name }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ $config.name }}
+    spec:
+      containers:
+      - name: {{ $config.name }}
+        image: {{ $config.image }}:{{ $config.tag }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ $config.port }}
+        resources:
+          limits:
+            memory: {{ $config.memory }}
+        env:
+        - name: EUREKA_INSTANCE_HOSTNAME
+          value: {{ $config.name }}
+        {{- if ne $config.name "config-server" }}
+        - name: SPRING_CLOUD_CONFIG_URI
+          value: http://config-server:8888
+        {{- end }}
+        {{- if and (ne $config.name "config-server") (ne $config.name "discovery-server") }}
+        - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+          value: http://discovery-server:8761/eureka/
+        {{- end }}
+        {{- if eq $config.name "discovery-server" }}
+        readinessProbe:
+          httpGet:
+            path: /
+            port: {{ $config.port }}
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 10
+        {{- end }}
+        {{- if eq $config.name "config-server" }}
+        readinessProbe:
+          httpGet:
+            path: /
+            port: {{ $config.port }}
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          timeoutSeconds: 5
+          failureThreshold: 10
+        {{- end }}
+{{- end }}
