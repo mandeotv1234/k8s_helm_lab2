@@ -11,22 +11,21 @@ pipeline {
         string(name: 'VALUES_FILE', description: 'The values file to update (e.g., values-staging.yaml or values-dev.yaml)')
     }
 
-    environment {
-        DOCKER_HUB_USERNAME = "mandeotv"
-        GITHUB_CREDS = credentials('mandeotv1234')
-    }
-
     stages {
         stage('Prepare Git') {
             steps {
-                sh "git checkout main"
-                sh "git config user.email 'jenkins@example.com'"
-                sh "git config user.name 'Jenkins CI'"
-                withCredentials([usernamePassword(credentialsId: 'mandeotv1234', 
-                                                  usernameVariable: 'GIT_USERNAME', 
-                                                  passwordVariable: 'GIT_PASSWORD')]) {
-                    sh 'git remote set-url origin https://$GIT_USERNAME:$GIT_PASSWORD@github.com/mandeotv1234/k8s_helm_lab2'
-                    sh 'git pull origin main'
+                script {
+                    sh "git checkout main"
+                    sh "git config user.email 'jenkins@example.com'"
+                    sh "git config user.name 'Jenkins CI'"
+                    withCredentials([usernamePassword(
+                        credentialsId: 'mandeotv1234',
+                        usernameVariable: 'GIT_USERNAME',
+                        passwordVariable: 'GIT_PASSWORD'
+                    )]) {
+                        sh "git remote set-url origin https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/mandeotv1234/k8s_helm_lab2"
+                        sh "git pull origin main"
+                    }
                 }
             }
         }
@@ -37,9 +36,15 @@ pipeline {
                     def serviceNames = params.SERVICE_NAMES.split(',')
                     def imageTags = params.IMAGE_TAGS.split(',')
                     def valuesFile = params.VALUES_FILE ?: "values-dev.yaml"
+
+                    echo "SERVICE_NAMES: ${params.SERVICE_NAMES}"
+                    echo "IMAGE_TAGS: ${params.IMAGE_TAGS}"
+                    echo "VALUES_FILE: ${valuesFile}"
+
                     if (serviceNames.size() != imageTags.size()) {
                         error "Mismatch between number of services and tags"
                     }
+
                     for (int i = 0; i < serviceNames.size(); i++) {
                         def service = serviceNames[i].trim()
                         def tag = imageTags[i].trim()
@@ -51,7 +56,9 @@ pipeline {
                                 yamlServiceKey += parts[j].capitalize()
                             }
                         }
-                        echo "Updating ${service} (${yamlServiceKey} in YAML) to tag ${tag} in ${valuesFile}"
+
+                        echo "Updating ${service} (${yamlServiceKey}) to tag ${tag} in ${valuesFile}"
+
                         sh """
                             cd petclinic-helm/petclinic
                             if [ ! -f "${valuesFile}" ]; then
@@ -59,14 +66,16 @@ pipeline {
                                 cp values.yaml ${valuesFile}
                             fi
                         """
+
                         sh """
                             cd petclinic-helm/petclinic
                             sed -i '/  ${yamlServiceKey}:/,+5 s/tag: .*/tag: ${tag}/g' ${valuesFile}
                         """
+
                         sh """
                             cd petclinic-helm/petclinic
-                            echo "Checking updated values for ${yamlServiceKey} in ${valuesFile}:"
-                            grep -A 5 "${yamlServiceKey}:" ${valuesFile} || echo "Service not found in ${valuesFile}"
+                            echo "Updated section for ${yamlServiceKey}:"
+                            grep -A 5 "${yamlServiceKey}:" ${valuesFile} || echo "Key not found."
                         """
                     }
                 }
@@ -79,10 +88,13 @@ pipeline {
                     def valuesFile = params.VALUES_FILE ?: "values-dev.yaml"
                     sh "cd petclinic-helm/petclinic && git status --porcelain > /tmp/changes.txt"
                     def hasChanges = readFile('/tmp/changes.txt').trim()
+
                     if (hasChanges) {
-                        withCredentials([usernamePassword(credentialsId: 'mandeotv1234', 
-                                                        usernameVariable: 'GIT_USERNAME', 
-                                                        passwordVariable: 'GIT_PASSWORD')]) {
+                        withCredentials([usernamePassword(
+                            credentialsId: 'mandeotv1234',
+                            usernameVariable: 'GIT_USERNAME',
+                            passwordVariable: 'GIT_PASSWORD'
+                        )]) {
                             sh """
                                 cd petclinic-helm/petclinic
                                 git add ${valuesFile}
@@ -90,9 +102,9 @@ pipeline {
                                 git push origin main
                             """
                         }
-                        echo "Pushed changes to repo"
+                        echo "✅ Changes pushed to GitHub."
                     } else {
-                        echo "No changes detected, skipping commit"
+                        echo "⚠️ No changes to commit."
                     }
                 }
             }
@@ -101,10 +113,10 @@ pipeline {
 
     post {
         success {
-            echo "Successfully updated Helm charts for services: ${params.SERVICE_NAMES}"
+            echo "✅ Successfully updated Helm charts for services: ${params.SERVICE_NAMES}"
         }
         failure {
-            echo "Failed to update Helm charts"
+            echo "❌ Failed to update Helm charts"
         }
     }
 }
