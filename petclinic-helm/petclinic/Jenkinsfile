@@ -80,7 +80,7 @@ pipeline {
                     sh "cd petclinic-helm/petclinic && git status --porcelain > /tmp/changes.txt"
                     def hasChanges = readFile('/tmp/changes.txt').trim()
                     if (hasChanges) {
-                        withCredentials([usernamePassword(credentialsId: 'github_CI_k8s', 
+                        withCredentials([usernamePassword(credentialsId: 'mandeotv1234', 
                                                         usernameVariable: 'GIT_USERNAME', 
                                                         passwordVariable: 'GIT_PASSWORD')]) {
                             sh """
