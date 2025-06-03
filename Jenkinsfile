@@ -19,7 +19,7 @@ pipeline {
                     sh "git config user.email 'jenkins@example.com'"
                     sh "git config user.name 'Jenkins CI'"
                     withCredentials([usernamePassword(
-                        credentialsId: 'mandeotv1234',
+                        credentialsId: 'gitHubHeml',
                         usernameVariable: 'GIT_USERNAME',
                         passwordVariable: 'GIT_PASSWORD'
                     )]) {
@@ -91,7 +91,7 @@ pipeline {
 
                     if (hasChanges) {
                         withCredentials([usernamePassword(
-                            credentialsId: 'mandeotv1234',
+                            credentialsId: 'gitHubHeml',
                             usernameVariable: 'GIT_USERNAME',
                             passwordVariable: 'GIT_PASSWORD'
                         )]) {
