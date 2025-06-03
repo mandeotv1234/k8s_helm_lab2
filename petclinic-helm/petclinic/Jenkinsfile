@@ -12,8 +12,8 @@ pipeline {
     }
 
     environment {
-        DOCKER_HUB_USERNAME = "donalmun"
-        GITHUB_CREDS = credentials('github_CI_k8s')
+        DOCKER_HUB_USERNAME = "mandeotv"
+        GITHUB_CREDS = credentials('mandeotv1234')
     }
 
     stages {
@@ -22,10 +22,10 @@ pipeline {
                 sh "git checkout main"
                 sh "git config user.email 'jenkins@example.com'"
                 sh "git config user.name 'Jenkins CI'"
-                withCredentials([usernamePassword(credentialsId: 'github_CI_k8s', 
+                withCredentials([usernamePassword(credentialsId: 'mandeotv1234', 
                                                   usernameVariable: 'GIT_USERNAME', 
                                                   passwordVariable: 'GIT_PASSWORD')]) {
-                    sh 'git remote set-url origin https://$GIT_USERNAME:$GIT_PASSWORD@github.com/donalmun/k8s_helm_lab2'
+                    sh 'git remote set-url origin https://$GIT_USERNAME:$GIT_PASSWORD@github.com/mandeotv1234/k8s_helm_lab2'
                     sh 'git pull origin main'
                 }
             }
