@@ -3,48 +3,48 @@ services:
   configServer:
     name: config-server
     image: donalmun/config-server
-    tag: 3fa1a7f
+    tag: eb23706
     port: 8888
     memory: 512Mi
 
   discoveryServer:
     name: discovery-server
     image: donalmun/discovery-server
-    tag: 3fa1a7f
+    tag: eb23706
     port: 8761
     memory: 512Mi
 
   customersService:
     name: customers-service
     image: donalmun/customers-service
-    tag: 3fa1a7f
+    tag: eb23706
     port: 8081
     memory: 512Mi
 
   visitsService:
     name: visits-service
     image: donalmun/visits-service
-    tag: 3fa1a7f
+    tag: eb23706
     port: 8082
     memory: 512Mi
 
   vetsService:
     name: vets-service
     image: donalmun/vets-service
-    tag: 3fa1a7f
+    tag: eb23706
     port: 8083
     memory: 512Mi
 
   apiGateway:
     name: api-gateway
     image: donalmun/api-gateway
-    tag: 3fa1a7f
+    tag: eb23706
     port: 8080
     memory: 512Mi
 
   adminServer:
     name: admin-server
     image: donalmun/admin-server
-    tag: 3fa1a7f
+    tag: eb23706
     port: 9090
     memory: 512Mi
