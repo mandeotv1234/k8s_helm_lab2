@@ -10,41 +10,41 @@ services:
   discoveryServer:
     name: discovery-server
     image: donalmun/discovery-server
-    tag: eb23706
+    tag: 5291d1c
     port: 8761
     memory: 512Mi
 
   customersService:
     name: customers-service
     image: donalmun/customers-service
-    tag: f36e9ca
+    tag: 5291d1c
     port: 8081
     memory: 512Mi
 
   visitsService:
     name: visits-service
     image: donalmun/visits-service
-    tag: eb23706
+    tag: 5291d1c
     port: 8082
     memory: 512Mi
 
   vetsService:
     name: vets-service
     image: donalmun/vets-service
-    tag: eb23706
+    tag: 5291d1c
     port: 8083
     memory: 512Mi
 
   apiGateway:
     name: api-gateway
     image: donalmun/api-gateway
-    tag: eb23706
+    tag: 5291d1c
     port: 8080
     memory: 512Mi
 
   adminServer:
     name: admin-server
     image: donalmun/admin-server
-    tag: eb23706
+    tag: 5291d1c
     port: 9090
     memory: 512Mi
