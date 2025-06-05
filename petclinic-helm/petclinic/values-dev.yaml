@@ -17,7 +17,7 @@ services:
   customersService:
     name: customers-service
     image: donalmun/customers-service
-    tag: eb23706
+    tag: f36e9ca
     port: 8081
     memory: 512Mi
 
