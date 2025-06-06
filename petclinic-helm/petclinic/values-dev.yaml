@@ -10,7 +10,7 @@ services:
   discoveryServer:
     name: discovery-server
     image: donalmun/discovery-server
-    tag: 57681c3
+    tag: fc67197
     port: 8761
     memory: 512Mi
 
@@ -24,21 +24,21 @@ services:
   visitsService:
     name: visits-service
     image: donalmun/visits-service
-    tag: 57681c3
+    tag: fc67197
     port: 8082
     memory: 512Mi
 
   vetsService:
     name: vets-service
     image: donalmun/vets-service
-    tag: 57681c3
+    tag: fc67197
     port: 8083
     memory: 512Mi
 
   apiGateway:
     name: api-gateway
     image: donalmun/api-gateway
-    tag: 57681c3
+    tag: fc67197
     port: 8080
     memory: 512Mi
 
