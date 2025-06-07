@@ -38,7 +38,7 @@ services:
   apiGateway:
     name: api-gateway
     image: donalmun/api-gateway
-    tag: fc67197
+    tag: 801e12a
     port: 8080
     memory: 512Mi
 
