@@ -17,34 +17,34 @@ services:
   customersService:
     name: customers-service
     image: donalmun/customers-service
-    tag: 57681c3
+    tag: 152e78f
     port: 8081
     memory: 512Mi
 
   visitsService:
     name: visits-service
     image: donalmun/visits-service
-    tag: fc67197
+    tag: 152e78f
     port: 8082
     memory: 512Mi
 
   vetsService:
     name: vets-service
     image: donalmun/vets-service
-    tag: fc67197
+    tag: 152e78f
     port: 8083
     memory: 512Mi
 
   apiGateway:
     name: api-gateway
     image: donalmun/api-gateway
-    tag: 801e12a
+    tag: 152e78f
     port: 8080
     memory: 512Mi
 
   adminServer:
     name: admin-server
     image: donalmun/admin-server
-    tag: 57681c3
+    tag: 152e78f
     port: 9090
     memory: 512Mi
